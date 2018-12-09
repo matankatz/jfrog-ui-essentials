@@ -9,4 +9,3 @@ atlassian-ide-plugin.xml
 node_modules
 components
 jest-coverage
-dist

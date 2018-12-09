@@ -1,8 +1,9 @@
 class jfDataListController {
-	constructor($scope, $rootScope, $element, JFrogModal, JFrogUIUtils) {
+	constructor($scope, $rootScope, $element, $timeout, JFrogModal, JFrogUIUtils) {
 		this.$scope = $scope;
 		this.$rootScope = $rootScope;
 		this.$element = $element;
+		this.$timeout = $timeout;
 		this.JFrogModal = JFrogModal;
 		this.JFrogUIUtils = JFrogUIUtils;
 
@@ -24,25 +25,28 @@ class jfDataListController {
 	 * After exiting the loop return the overflowing flag
 	 * **/
 	htmlIsOverflowing(rowId) {
-		let elem = this.$element.find(rowId);
-		let children = elem.children('.tag');
-		let maxWidth = elem.closest('.data-list-item-value').outerWidth() - 60;
-		let totalChildrenWidth = 0;
-		children.each((i,child) => {
-			let childElem = $(child);
-			totalChildrenWidth += childElem.outerWidth()
-				+ parseInt(childElem.css('margin-left'))
-				+ parseInt(childElem.css('margin-right'));
+        // this.$timeout(function() {
+            let elem = this.$element.find(rowId);
 
-			if(totalChildrenWidth < maxWidth){
-				childElem.removeClass('overflowing-child');
-			}
-			if(totalChildrenWidth > maxWidth && !childElem.is('.overflowing-child')){
-				childElem.addClass('overflowing-child');
-			}
+            let children = elem.children('.tag');
+            let maxWidth = elem.closest('.data-list-item-value').outerWidth() - 60;
+            let totalChildrenWidth = 0;
+            children.each((i, child) => {
+                let childElem = $(child);
+                totalChildrenWidth += childElem.outerWidth()
+                    + parseInt(childElem.css('margin-left'))
+                    + parseInt(childElem.css('margin-right'));
 
-		});
-		return elem.children('.tag.overflowing-child').length > 0;
+                if (totalChildrenWidth < maxWidth) {
+                    childElem.removeClass('overflowing-child');
+                }
+                if (totalChildrenWidth > maxWidth && !childElem.is('.overflowing-child')) {
+                    childElem.addClass('overflowing-child');
+                }
+
+            });
+            return elem.children('.tag.overflowing-child').length > 0;
+        // },0);
 	}
 
 	showAll(model, rowName, objectName) {
